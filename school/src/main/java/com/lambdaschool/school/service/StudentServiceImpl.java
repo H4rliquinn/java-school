@@ -26,7 +26,7 @@ public class StudentServiceImpl implements StudentService
     }
 
     @Override
-    public Student findStudentById(long id) throws EntityNotFoundException
+    public Student findStudentById(long id)
     {
         return studrepos.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Long.toString(id)));
@@ -37,6 +37,10 @@ public class StudentServiceImpl implements StudentService
     {
         List<Student> list = new ArrayList<>();
         studrepos.findByStudnameContainingIgnoreCase(name).iterator().forEachRemaining(list::add);
+        if (list.isEmpty())
+        {
+            throw new EntityNotFoundException("No Match for "+name);
+    }
         return list;
     }
 
